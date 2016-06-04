@@ -1,0 +1,67 @@
+/* Question: Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its level order traversal as:
+[
+  [3],
+  [9,20],
+  [15,7]
+] */
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(root==null)
+        return result;
+        List<Integer> l= new ArrayList<Integer>();
+        Queue<TreeNode> q= new LinkedList<TreeNode>();
+        TreeNode dummy= new TreeNode(0);
+        q.add(root);
+        q.add(dummy);
+        while(!q.isEmpty())
+        {
+            TreeNode current=q.poll();
+            if(current!=dummy)
+            {
+                l.add(current.val);
+                if(current.left!=null)
+                q.add(current.left);
+                if(current.right!=null)
+                q.add(current.right);
+            }
+            else
+            {
+                //result.add(l);
+                //result.add(deepCopy(l));
+                List<Integer> r = new ArrayList<Integer>();
+                r.addAll(l);
+                result.add(r);
+                l.clear();
+                if(!q.isEmpty())
+                q.add(dummy);
+            }
+        }
+        return result;
+    }
+    public List<Integer> deepCopy(List<Integer> l)
+    {
+        List<Integer> result = new ArrayList<Integer>();
+        result.addAll(l);
+        return result;
+    }
+}
