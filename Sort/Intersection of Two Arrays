@@ -1,0 +1,28 @@
+/* Question: Given two arrays, write a function to compute their intersection.
+
+Example:
+Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2]. */
+
+import java.util.Collections;
+import java.util.Collection;
+public class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        if(nums1.length==0 || nums2.length==0)
+            return new int[0];
+        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> result = new HashSet<Integer>();
+        
+        for(int i:nums1)
+            set.add(i);
+        for(int i:nums2)
+            if(set.contains(i) && !result.contains(i))
+              result.add(i);
+            
+            Iterator<Integer> i = result.iterator();
+            int[] A = new int[result.size()];
+            int j=0;
+            while(i.hasNext())
+            A[j++]=i.next();
+            return A;
+    }
+}
