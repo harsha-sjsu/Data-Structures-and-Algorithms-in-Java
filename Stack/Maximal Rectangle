@@ -1,0 +1,63 @@
+// Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) 
+        return 0;
+        int[] height = new int[matrix[0].length];
+        for(int i=0;i<matrix[0].length;i++)
+        {
+            if(matrix[0][i]=='1')
+            height[i]=1;
+            else
+            height[i]=0;
+        }
+        int result = largestArea(height);
+        for(int j=1;j<matrix.length;j++)
+        {
+           for(int i=0;i<matrix[0].length;i++)
+           {
+                if(matrix[j][i]=='1')
+                height[i]=height[i]+1;
+                else
+                height[i]=0;
+            }
+            result = Math.max(result, largestArea(height));
+        }
+        return result;
+    }
+    public int largestArea(int[] height) {
+        int i, area, max=0, topIndex;
+        Stack<Integer> s = new Stack<Integer>();
+        for(i=0;i<height.length;)
+        {
+            if(s.empty() || height[s.peek()] <= height[i])
+            s.push(i++);
+            else
+            {
+                topIndex = s.pop();
+                if(s.empty())
+                    area = height[topIndex]*i;
+                else
+                {
+                    area = height[topIndex]*(i-s.peek()-1);
+                }
+                if(max<area)
+                max=area;
+            }
+        }
+        while(!s.empty())
+        {
+                topIndex = s.pop();
+                if(s.empty())
+                    area = height[topIndex]*i;
+                else
+                {
+                    area = height[topIndex]*(i-s.peek()-1);
+                }
+                if(max<area)
+                max=area; 
+        }
+    return max;    
+    }
+}
