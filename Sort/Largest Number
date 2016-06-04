@@ -1,0 +1,69 @@
+/* Question: Given a list of non negative integers, arrange them such that they form the largest number.
+
+For example, given [3, 30, 34, 5, 9], the largest formed number is 9534330.
+
+Note: The result may be very large, so you need to return a string instead of an integer. */
+
+public class Solution {
+    //mergesort
+    public String largestNumber(int[] nums) {
+        int n;
+        for(n=0;n<nums.length;n++)
+        {
+            if(nums[n]!=0)
+            break;
+        }
+        if(n==nums.length)
+        return new String("0");
+        mergesort(nums);
+         StringBuilder s = new StringBuilder();
+        for(int i=0;i<nums.length;i++)
+        {
+           s.append(nums[i]);
+        }
+        return s.toString();
+    }
+    	public void mergesort(int[] A) {
+		int n = A.length;
+		if (n < 2)
+			return;
+		int mid = n / 2, i;
+		int[] l = new int[mid], r = new int[n - mid];
+		for (i = 0; i < mid; i++)
+			l[i] = A[i];
+		for (; i < n; i++)
+			r[i - mid] = A[i];
+		mergesort(l);
+		mergesort(r);
+		merge(l, r, A);
+	}
+
+	public void merge(int[] l, int[] r, int[] A) {
+	int x=l.length, y = r.length,i=0, j=0, k=0;
+	while(i<x && j<y)
+	{
+		if(compare(l[i],r[j]))
+			A[k++]=r[j++];
+		else
+			A[k++]=l[i++];
+	}
+	while(j<y)
+		A[k++]=r[j++];
+	while(i<x)
+		A[k++]=l[i++];
+}
+    public boolean compare(int a, int b)
+    {
+        if(a == 0 && b!=0)
+        return true;
+        else if(a!=0 && b==0)
+        return false;
+        int i = (int)Math.log10(a)+1, j = (int)Math.log10(b)+1;
+        if(i==j && a<b)
+        return true;
+        else if(i==j && a>b)
+        return false;
+        else
+        return (a*Math.pow(10,j)+b) < (b*Math.pow(10,i)+a);
+    }
+}
