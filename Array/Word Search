@@ -1,0 +1,72 @@
+/*
+Given a 2D board and a word, find if the word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+For example,
+Given board =
+
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+word = "ABCCED", -> returns true,
+word = "SEE", -> returns true,
+word = "ABCB", -> returns false.
+*/
+
+public class Solution {
+    public boolean exist(char[][] board, String word) {
+        int[][] sol = new int[board.length][board[0].length];
+        for(int i=0;i<board.length;i++)
+        {
+            for(int j=0;j<board[0].length;j++)
+            {
+                if(board[i][j]==word.charAt(0))
+                    {
+                        sol[i][j]=1;
+                        if(solveword(i,j,sol,board,word,1,1))
+                            return true;
+                        else
+                            sol[i][j]=0;
+                    }    
+            }
+        }
+        return false;
+    }
+    private boolean solveword(int i,int j, int[][] sol,char[][] board,String word,int move, int index)
+    {
+        if(move == word.length())
+        return true;
+        
+                for(int a=i-1;a<=i+1;a=a+2)
+                {
+                       if(issafe(a,j,sol,board,word,index))
+                    {
+                        sol[a][j]=1;
+                        if(solveword(a,j,sol,board,word,move+1,index+1))
+                            return true;
+                        else
+                        sol[a][j]=0;
+                    } 
+                }
+                for(int a=j-1;a<=j+1;a=a+2)
+                {
+                       if(issafe(i,a,sol,board,word,index))
+                    {
+                        sol[i][a]=1;
+                        if(solveword(i,a,sol,board,word,move+1,index+1))
+                            return true;
+                        else
+                        sol[i][a]=0;
+                    } 
+                }
+                
+        return false;
+    }
+    private boolean issafe(int a, int b, int[][] sol,char[][] board, String word, int index)
+    {
+        return (a>=0 && a<board.length) && (b>=0 && b< board[0].length) && (sol[a][b]==0) && (board[a][b]==word.charAt(index));
+    }
+}
