@@ -1,0 +1,41 @@
+/*
+Given a collection of integers that might contain duplicates, nums, return all possible subsets.
+
+Note: The solution set must not contain duplicate subsets.
+
+For example,
+If nums = [1,2,2], a solution is:
+
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+*/
+
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        Set<List<Integer>> set = new HashSet<List<Integer>>();
+        List<List<Integer>> outerList= new ArrayList<List<Integer>>();
+        for(int i=0;i<(int)Math.pow(2,n);i++)
+        {
+            List innerList= new ArrayList<Integer>();
+            for(int j=0;j<n;j++)
+            {
+                if((i & (1<<j)) !=0)
+                innerList.add(nums[j]);
+            }
+            if(!set.contains(innerList))
+            {
+                outerList.add(innerList);
+                set.add(innerList);
+            }    
+        }
+        return outerList;
+    }
+}
